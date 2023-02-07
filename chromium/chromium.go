@@ -28,6 +28,7 @@ type ChromeDevToolsVersion struct {
 
 var isDockerized bool
 var chromeDevToolsURL string
+var chromeDevToolsWSHost string
 
 func init() {
 	isDockerized = os.Getenv("DOCKERIZED") == "true"
@@ -44,6 +45,7 @@ func init() {
 
 func getCDTData() ChromeDevToolsVersion {
 	var CDTData ChromeDevToolsVersion
+	isDockerized = os.Getenv("DOCKERIZED") == "true"
 
 	client := resty.New()
 
@@ -57,7 +59,9 @@ func getCDTData() ChromeDevToolsVersion {
 		log.Fatal(err)
 	}
 
-	CDTData.WebSocketDebuggerURL = strings.Replace(CDTData.WebSocketDebuggerURL, "localhost", "alpine_chrome:9222", 1)
+	if(isDockerized) {
+		CDTData.WebSocketDebuggerURL = strings.Replace(CDTData.WebSocketDebuggerURL, "localhost", "alpine_chrome:9222", 1)
+	}
 
 	return CDTData
 }
