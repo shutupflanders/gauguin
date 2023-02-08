@@ -61,6 +61,8 @@ func getCDTData() ChromeDevToolsVersion {
 
 	if(isDockerized) {
 		CDTData.WebSocketDebuggerURL = strings.Replace(CDTData.WebSocketDebuggerURL, "localhost", "alpine_chrome:9222", 1)
+	} else {
+		CDTData.WebSocketDebuggerURL = strings.Replace(CDTData.WebSocketDebuggerURL, "localhost/", "localhost:9222/", 1)
 	}
 
 	return CDTData
